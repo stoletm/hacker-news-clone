@@ -1,0 +1,25 @@
+.header {
+    display: flex;
+    height: 120px;
+    align-items: start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    &__logo {
+        height: 100px;
+    }
+    &__title {
+        flex-basis: 90%;
+    }
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-basis: 80%;
+    }
+    &__aside {
+
+        font-size: 12px;
+
+    }
+}
