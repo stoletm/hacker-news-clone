@@ -18,7 +18,8 @@ const CommentsListItem = (props) => {
                 </Space>}
             style={{
                 width: '100%',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                background: '#eee'
             }}
             bordered={false}
         >

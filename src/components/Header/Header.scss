@@ -5,17 +5,24 @@
     justify-content: space-between;
     margin-bottom: 20px;
     border-radius: 20px;
+    @media (max-width: 767px) {
+        align-items: center;
+    }
     &__logo {
         height: 100px;
     }
     &__title {
+        @media (max-width: 1199px) {
+            margin-left: 10px;
+            font-size: 18px;
+        }
         flex-basis: 90%;
     }
     &__container {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-basis: 80%;
+        flex-basis: 100%;
     }
     &__aside {
 
@@ -23,3 +30,5 @@
 
     }
 }
+
+

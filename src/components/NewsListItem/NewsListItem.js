@@ -2,8 +2,7 @@ import { Card, Space } from 'antd';
 import { UserOutlined, StarOutlined, CommentOutlined, LinkOutlined, FieldTimeOutlined } from '@ant-design/icons'
 import { useState } from 'react';
 import useUnixToDate from '../../utils/unix-time-to-date';
-import HackerNewsAPI from '../../services/HackerNewsAPI';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
+import { NavLink } from 'react-router-dom';
 
 const NewsListItem = (props) => {
     const {author, commentCount, time, score, title, url, kids, id} = props.data;
@@ -14,6 +13,7 @@ const NewsListItem = (props) => {
         <Card
             title={title}
             style={{
+                background: '#eee',
                 width: '100%',
                 marginBottom: '20px'
             }}

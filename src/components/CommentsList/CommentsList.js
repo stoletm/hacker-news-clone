@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Divider, List, Typography } from 'antd';
+import { Space } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
 import CommentsListItem from "../CommentsListItem/CommentsListItem";
 import HackerNewsAPI from "../../services/HackerNewsAPI";
+import { NavLink } from "react-router-dom";
 
 
 const CommentsList = (props) => {
-    const style = {fontSize: 24, textAlign: 'center', background: 'white', borderRadius: '5px', padding: 50 }
+    const style = {fontSize: 24, textAlign: 'center', background: '#eee', borderRadius: '5px', width: '100%'}
     const [commentsList, setCommentsList] = useState([]);
     const commentIds = props.commentIds
 
@@ -38,12 +40,26 @@ const CommentsList = (props) => {
                 )
             })
         } else {
-            return <h1 style={style}>No comments found</h1>
+            return (
+                <NavLink to='/' style={{...style, padding: '25px'}}>
+                    <Space direction={'horizontal'} size={10}>
+                        <h1 style={style}>No comments found</h1>
+                        Go back
+                    </Space>
+                </NavLink>
+            )
+            
         }
         return (
             <>
-                <h1 style={{...style, padding: '25px'}}>Comments</h1>
+                <NavLink to='/' style={{...style, padding: '5px'}}>
+                    <Space direction={"horizontal"} size={10}>
+                        <LeftOutlined style={{color:'black'}}/>    
+                        Go back
+                    </Space>
+                </NavLink>
                 <ul style={{listStyle: 'none'}}>
+                    <h1 style={{...style, padding: {xs: '10px', s: '25px'}}}>Comments</h1>
                     {items}
                 </ul>
             </>

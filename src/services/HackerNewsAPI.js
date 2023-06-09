@@ -4,7 +4,6 @@ const _apiURL = 'https://hacker-news.firebaseio.com/v0/';
 
 const HackerNewsAPI = () => {
     const [loading, setLoading] = useState(false)
-    // const [storiesThreshold, setStoriesThreshold] = useState(0)
 
     const getStory = async (id) => {
         try {
