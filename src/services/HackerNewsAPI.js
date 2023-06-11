@@ -71,7 +71,8 @@ const HackerNewsAPI = () => {
             time: data.time,
             text: data.text,
             kids: data.kids,
-            parents: data.parents
+            parents: data.parents,
+            deleted: data.deleted
         }
     }
     return {

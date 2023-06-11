@@ -5,7 +5,7 @@ import useUnixToDate from '../../utils/unix-time-to-date';
 import HackerNewsAPI from '../../services/HackerNewsAPI';
 
 const CommentsListItem = (props) => {
-    const {author, time, text, kids} = props.data;
+    const {author, time, text, kids, deleted} = props.data;
     const inner = props.inner;
     const [date, setDate] = useState(useUnixToDate(time, 'toDateTime'));
 
@@ -86,7 +86,7 @@ const CommentsListItem = (props) => {
                     <Space size={15} direction='vertical'>
                         <p>
                             <Space size={10} style={{maxWidth: '96%'}}>
-                                {filteredText || text}
+                                {!deleted ? filteredText || text : '[Comment removed]'}
                             </Space>
                         </p>
                         <p>
