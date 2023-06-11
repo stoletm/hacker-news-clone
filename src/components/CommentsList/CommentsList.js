@@ -4,25 +4,35 @@ import { LeftOutlined } from "@ant-design/icons";
 import CommentsListItem from "../CommentsListItem/CommentsListItem";
 import HackerNewsAPI from "../../services/HackerNewsAPI";
 import { NavLink } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 const CommentsList = (props) => {
-    const style = {fontSize: 24, textAlign: 'center', background: '#eee', borderRadius: '5px', width: '100%'}
+    const style = {display: 'block', fontSize: 24, textAlign: 'center', background: '#eee', borderRadius: '5px', width: '100%'};
     const [commentsList, setCommentsList] = useState([]);
-    const commentIds = props.commentIds
+    const [reload, setReload] = useState(false);
+
+    const {selectedCommentIds, selectedPostTitle} = props;
 
     const {getAllComments, setLoading} = HackerNewsAPI();
 
     useEffect(() => {
-        onRequest()
+        onRequest(selectedCommentIds);
     },[])
 
-
-    const onRequest = () => {
-        getAllComments(commentIds)
+    useEffect(() => {
+        setReload(false);
+        onRequest(selectedCommentIds);
+    },[reload])
+        
+    const onRequest = (ids) => {
+        getAllComments(ids)
             .then(onCommentsListLoaded)
             .then(setLoading(false))
-        
+    }
+
+    const handleReload = () => {
+        setReload(true);
     }
 
     const onCommentsListLoaded = (newCommentsList) => {
@@ -30,46 +40,56 @@ const CommentsList = (props) => {
     }
 
     const renderItems = (arr) => {
-        let items;
-        if (arr) {
-            items = arr.map((item) => {
+
+        const items = arr.map((item) => {
                 return (
                     <li key={item.id}>
-                        <CommentsListItem data={item}/>
+                        <CommentsListItem data={item} kids={item.kids}/>
                     </li>
                 )
             })
-        } else {
-            return (
-                <NavLink to='/' style={{...style, padding: '25px'}}>
-                    <Space direction={'horizontal'} size={10}>
-                        <h1 style={style}>No comments found</h1>
-                        Go back
-                    </Space>
-                </NavLink>
-            )
-            
-        }
+
         return (
-            <>
-                <NavLink to='/' style={{...style, padding: '5px'}}>
+                <InfiniteScroll
+                dataLength={items.length}
+                hasMore={false}
+                loader={<h4>Loading...</h4>}
+                endMessage={
+                    <p style={{ textAlign: 'center' }}>
+                        <b>Yay! You have seen it all</b>
+                    </p>
+                }
+                refreshFunction={handleReload}
+                pullDownToRefresh
+                pullDownToRefreshThreshold={50}
+                pullDownToRefreshContent={
+                    <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+                }
+                releaseToRefreshContent={
+                    <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+                }
+            >
+                <ul style={{listStyle: 'none'}}>
+                    {items}
+                </ul>
+            </InfiniteScroll>
+        )
+    }
+
+    if (reload) return <redirect to={{pathname: '/'}}/>
+
+    return (
+        <>
+            <NavLink to='/' style={{...style, padding: '5px'}}>
                     <Space direction={"horizontal"} size={10}>
                         <LeftOutlined style={{color:'black'}}/>    
                         Go back
                     </Space>
                 </NavLink>
                 <ul style={{listStyle: 'none'}}>
-                    <h1 style={{...style, padding: {xs: '10px', s: '25px'}}}>Comments</h1>
-                    {items}
+                    <h1 style={{...style, padding: 10}}>{selectedPostTitle}</h1>
+                    {renderItems(commentsList)}
                 </ul>
-            </>
-        )
-    }
-
-    
-    return (
-        <>
-            {renderItems(commentsList)}
         </>
     )
 }

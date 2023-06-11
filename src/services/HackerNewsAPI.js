@@ -3,7 +3,7 @@ import { useState } from "react";
 const _apiURL = 'https://hacker-news.firebaseio.com/v0/';
 
 const HackerNewsAPI = () => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const getStory = async (id) => {
         try {
@@ -18,10 +18,10 @@ const HackerNewsAPI = () => {
 
     const getStories = async (from = 0, to = 5) => {
         try {
-            const {data: storyIds} = await axios.get(`${_apiURL}/topstories.json`)
+            const {data: storyIds} = await axios.get(`${_apiURL}/topstories.json`);
             
             const stories = await Promise.all(storyIds.slice(from, to).map(getStory));
-            return stories;
+            return stories
         } catch (e) {
             setLoading(false);
             console.log('Fetch error');
@@ -31,7 +31,7 @@ const HackerNewsAPI = () => {
     const getAllComments = async (ids) => {
         try {
             const comments = await Promise.all(ids.map(getComment));
-            return comments;
+            return comments
         } catch (e) {
             setLoading(false);
             console.log('Fetch error');
@@ -61,7 +61,6 @@ const HackerNewsAPI = () => {
             score: data.score,
             commentCount: data.descendants,
             kids: data.kids
-            
         }
     }
     const _transformComment = (data) => {
@@ -75,8 +74,14 @@ const HackerNewsAPI = () => {
             parents: data.parents
         }
     }
-    return {getStories, getStory, getAllComments, getComment, loading, setLoading}
+    return {
+        getStories,
+        getStory,
+        getAllComments,
+        getComment,
+        loading,
+        setLoading
+    }
 };
-
 
 export default HackerNewsAPI;

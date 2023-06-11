@@ -1,13 +1,15 @@
 import { Card, Space } from 'antd';
-import { UserOutlined, StarOutlined, CommentOutlined, LinkOutlined, FieldTimeOutlined } from '@ant-design/icons'
+import { UserOutlined, StarOutlined, CommentOutlined, LinkOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import useUnixToDate from '../../utils/unix-time-to-date';
 import { NavLink } from 'react-router-dom';
+import Link from 'antd/es/typography/Link';
 
 const NewsListItem = (props) => {
     const {author, commentCount, time, score, title, url, kids, id} = props.data;
-    const setCommentIds = props.setCommentIds
-    const [date, setDate] = useState(useUnixToDate(time));
+    const setSelectedCommentIds = props.setSelectedCommentIds;
+    const setSelectedPostTitle = props.setSelectedPostTitle;
+    const [date, setDate] = useState(useUnixToDate(time, 'toDate'));
 
     return (
         <Card
@@ -15,12 +17,14 @@ const NewsListItem = (props) => {
             style={{
                 background: '#eee',
                 width: '100%',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                padding: '10px'
             }}
-            extra={<Space size={5}>
+            extra={<Space size={5} style={{marginLeft: '20px'}}>
                     <UserOutlined />
                     by <a href='#'>{author}</a>
                 </Space>}
+            size={'small'}
             type={'inner'}
             hoverable
             bordered={false}
@@ -28,7 +32,7 @@ const NewsListItem = (props) => {
             <p>
                 <Space size={10}>
                     <LinkOutlined />
-                    <a href={url}>{url}</a> 
+                    <Link style={{}} href={url}>{url}</Link> 
                 </Space>
             </p>
             <p>
@@ -45,8 +49,13 @@ const NewsListItem = (props) => {
                     </Space>
                         <NavLink
                             style={{color: 'inherit'}}
-                            to={`/comments/:${id}`}>
-                            <Space size={10} onClick={() => setCommentIds(kids)}>
+                            to={`/comments/${id}`}>
+                            <Space 
+                                size={10} 
+                                onClick={() => {
+                                    setSelectedCommentIds(kids);
+                                    setSelectedPostTitle(title);   
+                                }}>
                                 <CommentOutlined />
                                 {commentCount}
                             </Space>
@@ -54,7 +63,7 @@ const NewsListItem = (props) => {
                 </Space>
             </p>
         </Card>
-
     )
 };
+
 export default NewsListItem;

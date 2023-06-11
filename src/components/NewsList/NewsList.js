@@ -1,8 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import NewsListItem from "../NewsListItem/NewsListItem";
 import HackerNewsAPI from "../../services/HackerNewsAPI";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { redirect } from "react-router-dom";
 
 const NewsList = (props) => {
     const [newsList, setNewsList] = useState([]);
@@ -11,21 +10,22 @@ const NewsList = (props) => {
     const [showStoriesFrom, setShowStoriesFrom] = useState(0);
     const [showStoriesTo, setShowStoriesTo] = useState(showStoriesFrom + storiesToShow);
 
-    const setCommentIds = props.setCommentIds;
+    const setSelectedCommentIds = props.setSelectedCommentIds;
+    const setSelectedPostTitle = props.setSelectedPostTitle;
 
     const [reload, setReload] = useState(false);
 
     const {getStories, setLoading} = HackerNewsAPI();
 
     useEffect(() => {
-        onRequest(showStoriesFrom, showStoriesTo)
+        onRequest(showStoriesFrom, showStoriesTo);
     },[])
 
     useEffect(() => {
         setReload(false);
         setShowStoriesFrom(0);
-        setShowStoriesTo(storiesToShow)
-        onRequest(setShowStoriesFrom, setShowStoriesTo)
+        setShowStoriesTo(storiesToShow);
+        onRequest(setShowStoriesFrom, setShowStoriesTo);
     },[reload])
 
     const onRequest = (from, to) => {
@@ -48,10 +48,10 @@ const NewsList = (props) => {
         const items = arr.map((item) => {
             return (
                 <li key={item.id}>
-                    <NewsListItem setCommentIds={setCommentIds} data={item}/>
+                    <NewsListItem setSelectedCommentIds={setSelectedCommentIds} data={item} setSelectedPostTitle={setSelectedPostTitle}/>
                 </li>
             )
-        })
+        });
 
         return (
 
@@ -83,7 +83,9 @@ const NewsList = (props) => {
             </InfiniteScroll>
         )
     }
+    
     if (reload) return <redirect to={{pathname: '/'}}/>
+
     return (
         <>
             {renderItems(newsList)}
