@@ -17,7 +17,7 @@ function App() {
                 <main>
                     <Routes>
                         <Route path='/' element={<NewsList setSelectedCommentIds={setSelectedCommentIds} setSelectedPostTitle={setSelectedPostTitle}/>} />
-                        <Route path='/comments/:id' element={<CommentsList selectedCommentIds={selectedCommentIds} selectedPostTitle={selectedPostTitle}/>} />
+                        <Route path='/comments/:selectedCommentIds' element={<CommentsList selectedCommentIds={selectedCommentIds} selectedPostTitle={selectedPostTitle}/>} />
                         <Route path='*' element={<Page404/>} />
                     </Routes>
                 </main>

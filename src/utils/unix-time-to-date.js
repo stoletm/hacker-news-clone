@@ -1,24 +1,32 @@
-const useUnixToDate = (unixtime, format) => {
-    const timestamp = unixtime * 1000;
-    const date = new Date(timestamp);
+const useUnixToDate = (unixtime) => {
+    const date = new Date(unixtime * 1000);
 
-    const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-    const month = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : (date.getMonth() + 1);
-    const year = date.getFullYear();
-
-    const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-    const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-
-    switch(format) {
-        case 'toDate':
-            return `${day}.${month}.${year}`;
-        case 'toDateTime':
-            return `${day}.${month}.${year}  ${hours}:${minutes}`;
-        case 'toTime':
-            return `${hours}:${minutes}`;
-        default:
-            return `${day}.${month}.${year}`;
+    const getCurrentDate = () => {
+        const now = new Date();
+        const today = `${toPretty(now.getDate())}.${toPretty(now.getMonth() + 1)}`
+        const yesterday = `${toPretty(now.getDate() - 1)}.${toPretty(now.getMonth() + 1)}`
+        return {today, yesterday}
     }
+
+    const toPretty = (date) => {
+        if (date < 10) return `0${date}`
+        return date
+    }
+
+    const {today,yesterday} = getCurrentDate();
+    
+    const day = toPretty(date.getDate());
+    const month = toPretty(date.getMonth() + 1);
+    const year = date.getFullYear();
+    
+    const hours = toPretty(date.getHours())
+    const minutes = toPretty(date.getMinutes())
+    
+    if (`${day}.${month}` === today) {
+        return `today ${hours}:${minutes}`
+    } else if (`${day}.${month}` === yesterday) {
+        return `yesterday ${hours}:${minutes}`
+    } else return `${day}.${month} ${hours}:${minutes}`
 }
 
 export default useUnixToDate;

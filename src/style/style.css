@@ -24,14 +24,21 @@ ul {
     padding: 0;
 
 }
+
 p {
     margin: 0;
     padding: 0;
 }
+
 body {
     margin: 0;
     background: #b9a9a9;
 }
+
 .app {
     padding: 20px;
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }

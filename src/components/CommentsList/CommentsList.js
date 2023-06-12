@@ -5,6 +5,7 @@ import CommentsListItem from "../CommentsListItem/CommentsListItem";
 import HackerNewsAPI from "../../services/HackerNewsAPI";
 import { NavLink } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Helmet } from "react-helmet";
 
 
 const CommentsList = (props) => {
@@ -80,16 +81,22 @@ const CommentsList = (props) => {
 
     return (
         <>
+            <Helmet>
+                <meta
+                    name="comments"
+                    content={`${selectedPostTitle} - HackerNews`}/>
+                <title>{selectedPostTitle}</title>
+            </Helmet>
             <NavLink to='/' style={{...style, padding: '5px'}}>
-                    <Space direction={"horizontal"} size={10}>
-                        <LeftOutlined style={{color:'black'}}/>    
-                        Go back
-                    </Space>
-                </NavLink>
-                <ul style={{listStyle: 'none'}}>
-                    <h1 style={{...style, padding: 10}}>{selectedPostTitle}</h1>
-                    {renderItems(commentsList)}
-                </ul>
+                <Space direction={"horizontal"} size={10}>
+                    <LeftOutlined style={{color:'black'}}/>    
+                    Go back
+                </Space>
+            </NavLink>
+            <ul style={{listStyle: 'none'}}>
+                <h1 style={{...style, padding: 10}}>{selectedPostTitle}</h1>
+                {renderItems(commentsList)}
+            </ul>
         </>
     )
 }

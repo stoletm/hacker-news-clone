@@ -1,17 +1,18 @@
 import { Card, Space } from 'antd';
-import { UserOutlined, FieldTimeOutlined } from '@ant-design/icons'
-import { useState, useEffect } from 'react';
+import { UserOutlined, FieldTimeOutlined, UpOutlined, DownOutlined } from '@ant-design/icons'
+import { useState, useEffect, createRef } from 'react';
 import useUnixToDate from '../../utils/unix-time-to-date';
 import HackerNewsAPI from '../../services/HackerNewsAPI';
 
 const CommentsListItem = (props) => {
     const {author, time, text, kids, deleted} = props.data;
-    const inner = props.inner;
-    const [date, setDate] = useState(useUnixToDate(time, 'toDateTime'));
-
+    const style = props.style;
     const kidsIds = kids
+    
+    const [date, setDate] = useState(useUnixToDate(time));
+    const [hidden, setHidden] = useState(false);
     const [kidsData, setKidsData] = useState([]);
-
+    
     const {getAllComments, setLoading, loading} = HackerNewsAPI();
 
     const textFilter = (text) => {
@@ -21,7 +22,6 @@ const CommentsListItem = (props) => {
                         .replace(/&#x2F;/mg, `/`)
                         .replace(/&gt;/mg, `>`)
                         .replace(/&quot;/mg, `"`)
-                        .replace(/<p>/mg, `\n`)
             return filtered
         }
     }
@@ -47,13 +47,19 @@ const CommentsListItem = (props) => {
     }
 
     const renderKids = (arr) => {
-        console.log(kidsData + ' data')
         let items;
         if (arr) {
             items = arr.map((item) => {
-                console.log(item.by + ' kids');
                 return (
-                    <CommentsListItem data={item} key={item.id} kids={item.kids}/>        
+                    <CommentsListItem
+                        data={item}
+                        key={item.id}
+                        kids={item.kids}
+                        style={{
+                            borderLeft: '1px solid black',
+                            borderRadius: 0,
+                        }}
+                    />        
                 )
             });
         }
@@ -66,41 +72,41 @@ const CommentsListItem = (props) => {
 
     return (
         <Card
-            title={<Space>
-                    <UserOutlined />
-                    by {author}
-                </Space>}
             style={{
-                marginBottom: '20px',
+                ...style,
                 background: '#eee',
                 overflow: 'hidden',
-                wordWrap: 'revert-layer',
-                maxWidth: '100%'
-
+                wordWrap: 'break-word',
+                maxWidth: '100%',
+                marginBottom: '10px',
             }}
-            bordered={false}
-            inner={inner}
-        >
+            bordered='true'
+            size='small'
+            >
             <Space direction='vertical'>
-                <p>
-                    <Space size={15} direction='vertical'>
-                        <p>
-                            <Space size={10} style={{maxWidth: '96%'}}>
-                                {!deleted ? filteredText || text : '[Comment removed]'}
-                            </Space>
-                        </p>
-                        <p>
-                            <Space size={10}>
-                                <FieldTimeOutlined />
-                                {date}
-                            </Space>
-                        </p>
+                {<Space   style={{cursor: 'pointer', width: '100%'}}>
+                    <UserOutlined />
+                    by {author}
+                    {hidden 
+                        ? <DownOutlined onClick={() => setHidden(!hidden)}/> 
+                        : <UpOutlined onClick={() => setHidden(!hidden)}/>}
+                    <Space size={5} style={{marginLeft: 10}}>
+                        <FieldTimeOutlined />
+                        {date}
                     </Space>
-                </p>
-                {kidsIds ? renderKids(kidsData) : null}
+                </Space>}
+                {!hidden
+                    ? !deleted 
+                        ? <div dangerouslySetInnerHTML={{__html: filteredText} || text }></div>
+                        : '[Comment removed]'
+                    : null}
             </Space>
+            {!hidden
+                ? kidsIds
+                    ? renderKids(kidsData)
+                    : null
+                : null}
         </Card>
-
     )
 };
 

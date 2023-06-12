@@ -1,33 +1,33 @@
 .header {
     display: flex;
-    height: 120px;
+    max-height: 120px;
     align-items: start;
     justify-content: space-between;
     margin-bottom: 20px;
     border-radius: 20px;
     @media (max-width: 767px) {
         align-items: center;
+        
     }
     &__logo {
-        height: 100px;
+        max-height: 100px;
     }
     &__title {
         @media (max-width: 1199px) {
-            margin-left: 10px;
             font-size: 18px;
         }
         flex-basis: 90%;
     }
     &__container {
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        flex-basis: 100%;
+        flex-basis: 90%;
+        gap: 20px;
     }
     &__aside {
-
         font-size: 12px;
-
     }
 }
 

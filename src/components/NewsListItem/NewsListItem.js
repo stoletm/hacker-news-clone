@@ -9,7 +9,7 @@ const NewsListItem = (props) => {
     const {author, commentCount, time, score, title, url, kids, id} = props.data;
     const setSelectedCommentIds = props.setSelectedCommentIds;
     const setSelectedPostTitle = props.setSelectedPostTitle;
-    const [date, setDate] = useState(useUnixToDate(time, 'toDate'));
+    const [date, setDate] = useState(useUnixToDate(time));
 
     return (
         <Card
@@ -29,19 +29,17 @@ const NewsListItem = (props) => {
             hoverable
             bordered={false}
         >
-            <p>
+            <div>
                 <Space size={10}>
                     <LinkOutlined />
                     <Link style={{}} href={url}>{url}</Link> 
                 </Space>
-            </p>
-            <p>
-                <Space size={10}>
-                    <FieldTimeOutlined />
-                    {date}
-                </Space>
-            </p>
-            <p>
+            </div>
+            <Space size={10}>
+                <FieldTimeOutlined />
+                {date}
+            </Space>
+            <div>
                 <Space direction='horizontal' size={30}>
                     <Space size={10}>
                         <StarOutlined />
@@ -61,7 +59,7 @@ const NewsListItem = (props) => {
                             </Space>
                         </NavLink>
                 </Space>
-            </p>
+            </div>
         </Card>
     )
 };
